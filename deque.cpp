@@ -62,7 +62,30 @@ void Deque::pushBack(int x) {
   }
   first--;
   *first = x;
-  
+}
+
+void Deque::popFront() {
+  if (!front) {
+    cout << "popFront: Deque vacio" << endl;
+    return;
+  }
+  if (last == front->A) {
+    node* tmp = front;
+    front = front->prev;
+    delete tmp;
+    front->next = nullptr;
+    last = front->A+4;
+    return;
+  }
+  if (first == last) {
+    delete front;
+    front = nullptr;
+    back = nullptr;
+    first = nullptr;
+    last = nullptr;
+    return;
+  }
+  last--;
 }
 
 void Deque::print() {
@@ -72,8 +95,8 @@ void Deque::print() {
     }
     cout << "[";
     bool isFirstHere = first>=p->A && first<p->A+4;
-    bool isLastHere = last>=p->A && last<p->A+4;
-    for (int* i = p->A; i < p->A+5 && last+1 != i; i++) {
+
+    for (int* i = isFirstHere ? first : p->A; i < p->A+5 && last+1 != i; i++) {
       cout << *i;
       if (i != last && i != p->A+4) {
         cout << ", ";
@@ -81,13 +104,16 @@ void Deque::print() {
     }
     cout << "]";
   }
+  cout << endl;
 }
-
 
 int main() {
   Deque dq;
-  dq.pushBack(5);
-
-  
+  dq.pushFront(11);
+  dq.pushBack(8);
+  dq.popFront();
+  dq.popFront();
   dq.print();
+  cout << "first: " << *(dq.first) << endl;
+  cout << "last: " << *(dq.last) << endl;
 }
