@@ -1,19 +1,21 @@
 #include <iostream>
 using namespace std;
 
+template <class T>
 struct Queue {
   int A[10];
-  int* first = nullptr;
-  int* last = nullptr;
+  T* first = nullptr;
+  T* last = nullptr;
 
-  void push(int x);
+  void push(T x);
   void pop();
   void print();
-
+  
   ~Queue();
 };
 
-void Queue::push(int x) {
+template <class T>
+void Queue<T>::push(T x) {
   if (!first) {
     first = A;
     last = A;
@@ -33,7 +35,8 @@ void Queue::push(int x) {
   *last = x;
 }
 
-void Queue::pop() {
+template <class T>
+void Queue<T>::pop() {
   if (first == last) {
     first = nullptr;
     last = nullptr;
@@ -46,7 +49,8 @@ void Queue::pop() {
   first++;
 }
 
-void Queue::print() {
+template <class T>
+void Queue<T>::print() {
   cout << "first -> [";
   for (int* i = first; i && i != last+1; i++) {
     if (i == A+10) i = A;
@@ -58,14 +62,15 @@ void Queue::print() {
   cout << "] <- last" << endl;
 }
 
-Queue::~Queue() {
+template <class T>
+Queue<T>::~Queue() {
   while(!first) {
     pop();
   }
 }
 
 int main() {
-  Queue queue;
+  Queue<int> queue;
 
   for (int i = 1; i < 6; i++) {
     queue.push(i);

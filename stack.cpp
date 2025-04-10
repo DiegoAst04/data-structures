@@ -2,56 +2,56 @@
 #include <vector>
 using namespace std;
 
+template <class T>
 struct node {
   int value;
-  node* next;
+  node<T>* next;
 
-  node(int value, node* next) {
+  node(int value, node<T>* next) {
     this->value = value;
     this->next = next;
   }
 };
 
+template <class T>
 struct Stack {
-  node* head = nullptr;
-  node* top = nullptr;
+  node<T>* top = nullptr;
 
-  void push(int x);
+  void push(T x);
   void pop();
   void print();
   int peek();
   bool isEmpty();
   void clear();
-  vector<int> toVector();
+  vector<T> toVector();
 
   ~Stack();
 };
 
-void Stack::push(int x) {
-  if (!head) {
-    head = new node(x, nullptr);
-    top = head;
-  } else {
-    node* tmp = new node(x, top);
-    top = tmp;
-  }
+template <class T>
+void Stack<T>::push(T x) {
+  top = new node<T>(x, top);
 }
 
-void Stack::print() {
+template <class T>
+void Stack<T>::print() {
   if (!top) {
     cout << "print:\tPila vacia" << endl;
     return;
   }
-  
-  for (node* p = top ; p->next; p = p->next) {
-    cout << (*p).value << " -> ";
+  for (node<T>* p = top ; p; p = p->next) {
+    cout << (*p).value;
+    if (p->next) {
+      cout << " -> ";
+    }
   }
-  cout << (*head).value << endl;
+  cout << endl;
 }
 
-void Stack::pop() {
+template <class T>
+void Stack<T>::pop() {
    if (top) {
-    node* tmp = top;
+    node<T>* tmp = top;
     top = top->next;
     delete tmp;
   } else {
@@ -59,41 +59,46 @@ void Stack::pop() {
   }
 }
 
-int Stack::peek() {
+template <class T>
+int Stack<T>::peek() {
   if (!top) {
     return -1;
   }
   return (*top).value;
 }
 
-bool Stack::isEmpty() {
+template <class T>
+bool Stack<T>::isEmpty() {
   if (top) {
     return 0;
   }
   return 1;
 }
 
-void Stack::clear() {
+template <class T>
+void Stack<T>::clear() {
   while (top) {
     pop();
   }
   cout << "clear:\tpila limpia" << endl;
 }
 
-vector<int> Stack::toVector() {
-  vector<int> A;
-  for (node* p = top; p; p = p->next) {
+template <class T>
+vector<T> Stack<T>::toVector() {
+  vector<T> A;
+  for (node<T>* p = top; p; p = p->next) {
     A.push_back((*p).value);
   }
   return A;
 }
 
-Stack::~Stack() {
+template <class T>
+Stack<T>::~Stack() {
   clear();
 }
 
 int main() {
-  Stack stack;
+  Stack<int> stack;
   stack.print();
   stack.pop();
   stack.clear();
