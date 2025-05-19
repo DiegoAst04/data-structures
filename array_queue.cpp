@@ -3,36 +3,35 @@ using namespace std;
 
 template <class T>
 struct Queue {
-  int A[10];
+  T A[10];
   T* first = nullptr;
   T* last = nullptr;
 
-  void push(T x);
+  T push(T x);
   void pop();
   void print();
-  
-  ~Queue();
 };
 
 template <class T>
-void Queue<T>::push(T x) {
+T Queue<T>::push(T x) {
   if (!first) {
     first = A;
     last = A;
     *last = x;
-    return;
+    return *last;
   }
   if (first != A && last == A+9) {
     last = A;
     *last = x;
-    return;
+    return *last;
   }
   if (last+1 == first || (first == A && last == A+9)) {
     cout << "Cola llena" << endl;
-    return;
+    return 0;
   }
   last++;
   *last = x;
+  return *last;
 }
 
 template <class T>
@@ -40,8 +39,7 @@ void Queue<T>::pop() {
   if (first == last) {
     first = nullptr;
     last = nullptr;
-    cout << "Cola Vacía" << endl;
-    return;
+    cout << "Cola Vacia" << endl;
   }
   if (first == A+10) {
     first = A;
@@ -62,12 +60,6 @@ void Queue<T>::print() {
   cout << "] <- last" << endl;
 }
 
-template <class T>
-Queue<T>::~Queue() {
-  while(!first) {
-    pop();
-  }
-}
 
 int main() {
   Queue<int> queue;
@@ -79,15 +71,6 @@ int main() {
   queue.pop();
   queue.pop();
   queue.pop();
-  queue.pop();
-
-  for (int i = 14; i < 22; i++) {
-    queue.push(i);
-  }
-
-  for (int i = 0; i < 10; i++) {
-    queue.pop();
-  }
   
   queue.print();
 }

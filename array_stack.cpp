@@ -4,68 +4,62 @@ using namespace std;
 template <class T>
 struct Stack {
   T A[10];
-  T* head = nullptr;
   T* top = nullptr;
 
-  void push(T x);
-  void pop();
+  T push(T x);
+  T pop();
   void print();
 
-  ~Stack();
 };
 
 template <class T>
-void Stack<T>::push(T x) {
-  if (!head) {
-    head = A;
+T Stack<T>::push(T x) {
+  if (!top) {
     top = A;
     *top = x;
-    return;
+    return *top;
   }
   if (top == A+9) {
-   cout << "Pila llena" << endl;
-   return;
+    cout << "Pila llena" << endl;
+    return 0;
   }
   top++;
   *top = x;
+  return *top;
 }
 
 template <class T>
-void Stack<T>::pop() {
+T Stack<T>::pop() {
   if (!top) {
     cout << "Pila vacia" << endl;
+    return 0;
   }
-  if (top == head) {
+  if (top == A) {
     top = nullptr;
-    head = nullptr;
-    return;
+    return *A;
   }
   top--;
+  return *(top+1);
 }
 
 template <class T>
 void Stack<T>::print() {
-  cout << "HEAD -> [";
-  for (int* i = head; i && i <= top; i++) {
+  cout << "[";
+  for (int* i = A; i && i <= top; i++) {
     cout << *i;
     if (i != top) cout << ", ";
   }
   cout << "] <- TOP" << endl;
 }
 
-template <class T>
-Stack<T>::~Stack() {
-  while (top) {
-    pop();
-  }
-  cout << "Wea destruida exitosamente" << endl;
-}
-
 int main() {
   Stack<int> stack;
 
-  for (int i = 0; i < 10; i++) {
-    stack.push(i);
-  }
-  stack.print();
+  stack.push(6);
+  stack.push(7);
+  stack.push(10);
+
+  stack.pop();
+  
+  stack.print();  
 }
