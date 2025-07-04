@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <stack>
+#include <queue>
 using namespace std;
 
 struct node {
@@ -20,12 +20,12 @@ public:
   void insert(int x);
   void remove(int x);
   
-  void InOrder(node* p);
-  void PreOrder(node* p);
-  void PostOrder(node* p);
+  void inOrder(node* p);
+  void preOrder(node* p);
+  void postOrder(node* p);
 
   void ios(node* p);
-  void drawChart();
+  void levelPrint(node* p);
 };
 
 void BST::insert(int x) {
@@ -35,7 +35,7 @@ void BST::insert(int x) {
 }
 
 void BST::remove(int x) {
-  
+  // TODO
 }
 
 bool BST::find(int x, node**& p) {
@@ -46,7 +46,7 @@ bool BST::find(int x, node**& p) {
   return *p != 0;
 }
 
-void BST::ios(node* p) {
+void BST::ios(node* p) {  // In-Order stack
   stack<pair<node*, int>> S;
   S.emplace(p, 0);
   while (!S.empty()) {
@@ -82,40 +82,48 @@ void BST::ios(node* p) {
   }
 }
 
-void BST::InOrder(node* p) {
+void BST::inOrder(node* p) {
   if (!p) return;
-  InOrder(p->nodes[0]);
+  inOrder(p->nodes[0]);
   cout << p->value << " ";
-  InOrder(p->nodes[1]);
+  inOrder(p->nodes[1]);
 }
 
-void BST::PreOrder(node* p) {
+void BST::preOrder(node* p) {
   if (!p) return;
   cout << p->value << " ";
-  PreOrder(p->nodes[0]);
-  PreOrder(p->nodes[1]);
+  preOrder(p->nodes[0]);
+  preOrder(p->nodes[1]);
 }
 
-void BST::PostOrder(node* p) {
+void BST::postOrder(node* p) {
   if (!p) return;
-  PostOrder(p->nodes[0]);
-  PostOrder(p->nodes[1]);
+  postOrder(p->nodes[0]);
+  postOrder(p->nodes[1]);
   cout << p->value << " ";
 }
 
-void BST::drawChart() {
-  vector<int> A;
-
-  cout << " "; PostOrder(root);
-
+void BST::levelPrint(node* p) {
+  queue<node*> q;
+  q.push(p);
+  while(!q.empty()) {
+    int lastPopped = p->value;
+    p = q.front();
+    if (p->value < lastPopped) cout << endl;
+    cout << p->value << " ";
+    if (p->nodes[0]) q.push(p->nodes[0]);
+    if (p->nodes[1]) q.push(p->nodes[1]);
+    q.pop();
+  }
 }
 
 int main() {
   BST t;
 
-                    t.insert(10);
-              t.insert(4); t.insert(15);
-  t.insert(2); t.insert(7);t.insert(12); t.insert(18);
+                                            t.insert(10);
+                    t.insert(4);                                    t.insert(15);
+        t.insert(2);            t.insert(7);            t.insert(12);           t.insert(18);
+  t.insert(1);t.insert(3);t.insert(5);t.insert(8);t.insert(11);t.insert(14);t.insert(17);t.insert(20);
 
-  t.ios(t.root);
+  t.levelPrint(t.root);
 }
